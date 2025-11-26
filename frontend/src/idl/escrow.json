@@ -1,0 +1,283 @@
+{
+    "address": "E3vCXr3vKNbEghBfXtcSM87Qd72h5JebBE2hp1gxWy3e",
+    "metadata": {
+      "name": "escrow",
+      "version": "0.1.0",
+      "spec": "0.1.0",
+      "description": "Created with Anchor"
+    },
+    "instructions": [
+      {
+        "name": "accept_escrow",
+        "docs": [
+          "Accept escrow - recipient claims the funds"
+        ],
+        "discriminator": [
+          193,
+          2,
+          224,
+          245,
+          36,
+          116,
+          65,
+          154
+        ],
+        "accounts": [
+          {
+            "name": "escrow",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    101,
+                    115,
+                    99,
+                    114,
+                    111,
+                    119
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.sender",
+                  "account": "Escrow"
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.recipient",
+                  "account": "Escrow"
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.escrow_id",
+                  "account": "Escrow"
+                }
+              ]
+            }
+          },
+          {
+            "name": "recipient",
+            "writable": true,
+            "signer": true,
+            "relations": [
+              "escrow"
+            ]
+          },
+          {
+            "name": "sender",
+            "writable": true
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "cancel_escrow",
+        "docs": [
+          "Cancel escrow - sender gets refund"
+        ],
+        "discriminator": [
+          156,
+          203,
+          54,
+          179,
+          38,
+          72,
+          33,
+          21
+        ],
+        "accounts": [
+          {
+            "name": "escrow",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    101,
+                    115,
+                    99,
+                    114,
+                    111,
+                    119
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.sender",
+                  "account": "Escrow"
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.recipient",
+                  "account": "Escrow"
+                },
+                {
+                  "kind": "account",
+                  "path": "escrow.escrow_id",
+                  "account": "Escrow"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sender",
+            "writable": true,
+            "signer": true,
+            "relations": [
+              "escrow"
+            ]
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": []
+      },
+      {
+        "name": "initialize_escrow",
+        "docs": [
+          "Initialize a new escrow account",
+          "Sender deposits SOL into an escrow PDA for a specific recipient"
+        ],
+        "discriminator": [
+          243,
+          160,
+          77,
+          153,
+          11,
+          92,
+          48,
+          209
+        ],
+        "accounts": [
+          {
+            "name": "escrow",
+            "writable": true,
+            "pda": {
+              "seeds": [
+                {
+                  "kind": "const",
+                  "value": [
+                    101,
+                    115,
+                    99,
+                    114,
+                    111,
+                    119
+                  ]
+                },
+                {
+                  "kind": "account",
+                  "path": "sender"
+                },
+                {
+                  "kind": "account",
+                  "path": "recipient"
+                },
+                {
+                  "kind": "arg",
+                  "path": "escrow_id"
+                }
+              ]
+            }
+          },
+          {
+            "name": "sender",
+            "writable": true,
+            "signer": true
+          },
+          {
+            "name": "recipient"
+          },
+          {
+            "name": "system_program",
+            "address": "11111111111111111111111111111111"
+          }
+        ],
+        "args": [
+          {
+            "name": "amount",
+            "type": "u64"
+          },
+          {
+            "name": "escrow_id",
+            "type": "u64"
+          }
+        ]
+      }
+    ],
+    "accounts": [
+      {
+        "name": "Escrow",
+        "discriminator": [
+          31,
+          213,
+          123,
+          187,
+          186,
+          22,
+          218,
+          155
+        ]
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "InvalidAmount",
+        "msg": "Amount must be greater than 0"
+      },
+      {
+        "code": 6001,
+        "name": "UnauthorizedRecipient",
+        "msg": "Only the recipient can accept this escrow"
+      },
+      {
+        "code": 6002,
+        "name": "UnauthorizedSender",
+        "msg": "Only the sender can cancel this escrow"
+      }
+    ],
+    "types": [
+      {
+        "name": "Escrow",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            {
+              "name": "sender",
+              "type": "pubkey"
+            },
+            {
+              "name": "recipient",
+              "type": "pubkey"
+            },
+            {
+              "name": "amount",
+              "type": "u64"
+            },
+            {
+              "name": "escrow_id",
+              "type": "u64"
+            },
+            {
+              "name": "created_at",
+              "type": "i64"
+            },
+            {
+              "name": "bump",
+              "type": "u8"
+            }
+          ]
+        }
+      }
+    ]
+  }
